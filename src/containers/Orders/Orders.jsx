@@ -8,7 +8,7 @@ const API_MENU_URL = "http://localhost:8080/api/"
 const GET_MENU_LIST_URL = API_MENU_URL + `item/${RESTAURANT_ID}`
 const GET_COMPLETE_MENU_LIST_URL = API_MENU_URL + `category/restaurant/${RESTAURANT_ID}`
 
-class Menu extends Component {
+class Orders extends Component {
     state = {
         list: [],
     }
@@ -29,10 +29,9 @@ class Menu extends Component {
         return (
             <div>
                 <TopMenu />
-                <MenuTable list={this.state.list} />
             </div>
         )
     }
 }
 
-export default Menu;
+export default Orders;

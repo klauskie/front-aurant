@@ -12,6 +12,9 @@ const InitialSelection = () => {
                     <li className="nav-item">
                         <Link to='/join-party' className="nav-link">Join Party</Link>
                     </li>
+                    <li className="nav-item">
+                        <Link to='/menu' className="nav-link">Menu</Link>
+                    </li>
                 </ul>
             </nav>
         </div>
