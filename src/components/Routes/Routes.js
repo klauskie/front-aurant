@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import CreateParty from '../InitialSetup/CreateParty';
 import InitialSelection from '../InitialSetup/InitialSelection';
+import JoinParty from '../InitialSetup/JoinParty';
 import Waitroom from '../InitialSetup/Waitroom';
 
 class Routes extends Component {
@@ -10,6 +11,7 @@ class Routes extends Component {
             <Switch>
                 <Route exact path="/" component={InitialSelection} />
                 <Route exact path="/create-party" component={CreateParty} />
+                <Route exact path="/join-party" component={JoinParty} />
                 <Route exact path="/waitroom" render={(props) => <Waitroom {...props}/>}/>
             </Switch>
         );

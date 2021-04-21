@@ -14,7 +14,7 @@ class WaitRoomComponent extends Component {
     };
 
     componentDidMount() {
-        //this.interval = setInterval(this.tick, this.state.delay)
+        this.interval = setInterval(this.tick, this.state.delay)
         this.getPartyData()
     }
 

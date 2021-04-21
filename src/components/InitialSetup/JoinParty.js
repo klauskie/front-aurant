@@ -3,12 +3,13 @@ import axios from 'axios';
 import { useHistory } from "react-router-dom";
 
 const SESSION_API_URL = 'http://localhost:8083'
-const PARTY_API_URL = 'http://localhost:8081'
+const PARTY_API_URL = 'http://localhost:8081/party-api'
 
-const CreateParty = () => {
+const JoinParty = () => {
     const history = useHistory();
 
     let [name, setName] = useState("");
+    let [tag, setTag] = useState("");
     let [token, setToken] = useState("");
     let [partyId, setPartyId] = useState("");
 
@@ -21,7 +22,7 @@ const CreateParty = () => {
         }
     }
 
-    const createNewParty = () => {
+    const joinParty = () => {
         // Login as guest
         guestLogin()
     }
@@ -36,15 +37,15 @@ const CreateParty = () => {
             console.log(data)
             setToken(data.token)
             localStorage.setItem('token', data.token)
-            postNewParty(data.token)
+            putJoinParty(data.token)
         })
         .catch(err => console.log("Couldn't fetch data. Error: " + err))
     }
 
-    const postNewParty = (tk) => {
+    const putJoinParty = (tk) => {
         console.log("API CALL: /party-api/party")
         let requestData = {}
-        axios.post(`${PARTY_API_URL}/party-api/party`, requestData, {headers: getHeaders(tk)})
+        axios.put(`${PARTY_API_URL}/party/${tag}`, requestData, {headers: getHeaders(tk)})
         .then(res => {
             let data = res.data;
             console.log(data)
@@ -66,19 +67,24 @@ const CreateParty = () => {
 
     return (
         <div>
-            <h1>Create Party</h1>
+            <h1>Join Party</h1>
             <div className="container">
                 
                 <div className='form-group'>
                     <div className="input-group mb-3">
                         <div className="input-group-prepend">
-                            <span className="input-group-text" id="basic-addon1">Name</span>
+                            <span className="input-group-text" id="name-addon1">Name</span>
                         </div>
                         <input id='name' type='text' autoComplete='off' onChange={(e) => setName(e.target.value)} />
+
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="tag-addon1">Party TAG</span>
+                        </div>
+                        <input id='tag' type='text' autoComplete='off' onChange={(e) => setTag(e.target.value)} />
                     </div>
 
                     <div className="input-group mb-3">
-                        <div className='btn btn-primary' onClick={(e) => createNewParty()}>New Party</div>
+                        <div className='btn btn-primary' onClick={(e) => joinParty()}>Join Party</div>
                     </div>
                 </div>
             </div>
@@ -86,4 +92,4 @@ const CreateParty = () => {
     )
 }
 
-export default CreateParty;
+export default JoinParty;
