@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from 'react'
+import React, { Component } from 'react'
 import axios from 'axios';
 
 const PARTY_API_URL = 'http://localhost:8081/party-api'
