@@ -1,0 +1,44 @@
+.card-container {
+    padding: 3px 0px;
+    margin: 5px 0px;
+    padding: 1px;
+    background-color: white;
+    height: 50vw;
+}
+
+.bottom-block {
+    position: absolute;
+    bottom: 0;
+    margin: 5% auto;
+}
+
+.input-box-sm {
+    width: 20%;
+}
+
+.input-box-lr {
+    width: 100%;
+}
+
+.circle-btn {
+    border-radius: 50%;
+    margin: 0 2%;
+}
+
+.center {
+    text-align: center;
+}
+
+.row-item {
+    margin: 2% 0;
+}
+
+.justify-content-center {
+    display: flex;
+    justify-content: center;
+}
+
+.inc-dec-group {
+    width: 50%;
+    margin: auto;
+}
