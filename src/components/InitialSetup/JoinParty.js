@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
+import './InitialSetup.css';
 
 const SESSION_API_URL = 'http://localhost:8083'
 const PARTY_API_URL = 'http://localhost:8081/party-api'
@@ -67,26 +68,35 @@ const JoinParty = () => {
 
     return (
         <div>
-            <h1>Join Party</h1>
             <div className="container">
-                
-                <div className='form-group'>
-                    <div className="input-group mb-3">
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="name-addon1">Name</span>
-                        </div>
-                        <input id='name' type='text' autoComplete='off' onChange={(e) => setName(e.target.value)} />
 
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="tag-addon1">Party TAG</span>
-                        </div>
-                        <input id='tag' type='text' autoComplete='off' onChange={(e) => setTag(e.target.value)} />
-                    </div>
+                <div className="right">
+                    <a href="/create-party" className="a-tag" >Create Party</a>
+                </div>
 
-                    <div className="input-group mb-3">
-                        <div className='btn btn-primary' onClick={(e) => joinParty()}>Join Party</div>
+                <div className="">
+                    <h2 className="left">Join in!</h2>
+                </div>
+
+                <div className="row justify-content-md-center h-100">
+                    <div className="card-body">
+                        <div className="form-group">
+                            <label for="name">Name</label>
+                            <input autoComplete='off' onChange={(e) => setName(e.target.value)} id="name" type="text" className="form-control" name="name" value="" required autofocus/>
+                        </div>
+
+                        <div className="form-group">
+                            <label for="party-tag">Party TAG</label>
+                            <input autoComplete='off' onChange={(e) => setTag(e.target.value)} id="party-tag" type="text" className="form-control" name="party-tag" required data-eye/>
+                        </div>
+
+                        <div className="form-group">
+                            <button onClick={(e) => joinParty()} type="submit" className="btn btn-danger btn-block">Join Party</button>
+                        </div>
+
                     </div>
                 </div>
+            
             </div>
         </div>
     )

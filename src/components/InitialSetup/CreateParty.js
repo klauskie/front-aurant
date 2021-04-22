@@ -66,19 +66,27 @@ const CreateParty = () => {
 
     return (
         <div>
-            <h1>Create Party</h1>
             <div className="container">
-                
-                <div className='form-group'>
-                    <div className="input-group mb-3">
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="basic-addon1">Name</span>
-                        </div>
-                        <input id='name' type='text' autoComplete='off' onChange={(e) => setName(e.target.value)} />
-                    </div>
 
-                    <div className="input-group mb-3">
-                        <div className='btn btn-primary' onClick={(e) => createNewParty()}>New Party</div>
+                <div className="right">
+                    <a href="/join-party" className="a-tag" >Join a Party</a>
+                </div>
+
+                <div className="">
+                    <h2 className="left">Create a Party!</h2>
+                </div>
+
+                <div className="row justify-content-md-center h-100">
+                    <div className="card-body">
+                        <div className="form-group">
+                            <label for="name">Name</label>
+                            <input autoComplete='off' onChange={(e) => setName(e.target.value)} id="name" type="text" className="form-control" name="name" value="" required autofocus/>
+                        </div>
+
+                        <div className="form-group">
+                            <button onClick={(e) => createNewParty()} type="submit" className="btn btn-danger btn-block">Create Party</button>
+                        </div>
+
                     </div>
                 </div>
             </div>

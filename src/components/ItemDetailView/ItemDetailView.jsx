@@ -25,11 +25,6 @@ const ItemDetailView = ({ itemBundle }) => {
         setQuantity(newVal)
     }
 
-    const handleInstructionsInputChange = (event) => {
-        let text = event.target.value
-        setInstructions(text)
-    }
-
     const prepareDataOrder = () => {
         // TODO prepare data object and notify parent to call api
     }
@@ -42,7 +37,7 @@ const ItemDetailView = ({ itemBundle }) => {
                 <div className="rowrow-item ">{itemBundle.description}</div>
 
                 <div className="row row-item ">
-                    <input className="col-sm input-box-lr" onChange={(e) => {handleInstructionsInputChange(e)}} type="text" placeholder="Add instructions" />
+                    <input className="col-sm input-box-lr" onChange={(e) => {setInstructions(e.target.value)}} type="text" placeholder="Add instructions" />
                 </div>
 
                 <div className="row">
