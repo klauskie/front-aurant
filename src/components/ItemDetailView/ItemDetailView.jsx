@@ -3,7 +3,7 @@ import './ItemDetailView.css';
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
 
 
-const ItemDetailView = ({ itemBundle }) => {
+const ItemDetailView = ({ itemBundle, orderCallback }) => {
 
     let quantityInput = useRef(null)
     let [quantity, setQuantity] = useState(1)
@@ -30,7 +30,12 @@ const ItemDetailView = ({ itemBundle }) => {
     }
 
     const prepareDataOrder = () => {
-        // TODO prepare data object and notify parent to call api
+        let order = {
+            item_id: itemBundle.itemID,
+            instructions: instructions,
+            quantity: quantity
+        }
+        orderCallback(order)
     }
 
     return (
@@ -71,9 +76,9 @@ const ItemDetailView = ({ itemBundle }) => {
                 </div>
                 
                 <div className="justify-content-center">
-                    <div className="bottom-block btn btn-dark">
+                    <button onClick={prepareDataOrder} type="button" className="bottom-block btn btn-dark">
                         Add to cart: ${itemBundle.price * parseFloat(quantity)}
-                    </div>
+                    </button>
                 </div>
             </div>
         </div>
