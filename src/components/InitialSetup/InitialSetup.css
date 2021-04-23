@@ -29,3 +29,16 @@
     text-decoration: none;
     color: #C82333;
 }
+
+.color-red {
+    color: #DC3545;
+}
+
+.margin-top {
+    margin-top: 10%;
+}
+
+.bold {
+    font-weight: bold;
+    font-size: larger;
+}

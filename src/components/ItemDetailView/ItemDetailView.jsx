@@ -5,7 +5,7 @@ import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
 
 const ItemDetailView = ({ itemBundle }) => {
 
-    const quantityInput = useRef(null)
+    let quantityInput = useRef(null)
     let [quantity, setQuantity] = useState(1)
     let [instructions, setInstructions] = useState("")
 
@@ -23,6 +23,10 @@ const ItemDetailView = ({ itemBundle }) => {
         let newVal = currentValue + 1
         quantityInput.current.value = newVal
         setQuantity(newVal)
+    }
+
+    const handleChange = () => {
+
     }
 
     const prepareDataOrder = () => {
@@ -44,7 +48,7 @@ const ItemDetailView = ({ itemBundle }) => {
                     <div className="col-lg-2 inc-dec-group">
                             <div className="input-group">
                                 <span className="input-group-btn">
-                                    <button onClick={onMinusClicked} type="button" class="quantity-left-minus btn btn-light btn-number"  datatype="minus" data-field="">
+                                    <button onClick={onMinusClicked} type="button" className="quantity-left-minus btn btn-light btn-number"  datatype="minus" data-field="">
                                         <span>
                                             <AiOutlineMinus />
                                         </span>
@@ -52,7 +56,7 @@ const ItemDetailView = ({ itemBundle }) => {
                                 </span>
 
 
-                                <input id="quantity-input" ref={quantityInput} value={quantity} onChange={(e) => {this.handleChange(e)}} type="number" className="form-control input-number" min={1} max={100}/>
+                                <input id="quantity-input" ref={quantityInput} value={quantity} onChange={(e) => {handleChange(e)}} type="number" className="form-control input-number" min={1} max={100}/>
                                 
                                 
                                 <span className="input-group-btn">

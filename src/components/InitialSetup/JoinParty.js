@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
+import { useCookies } from 'react-cookie'
 import './InitialSetup.css';
 
 const SESSION_API_URL = 'http://localhost:8083'
 const PARTY_API_URL = 'http://localhost:8081/party-api'
+const SIX_HOURS = 6*60*60*1000;
 
 const JoinParty = () => {
     const history = useHistory();
+    const [cookies, setCookie] = useCookies(['access_token', 'tag'])
 
     let [name, setName] = useState("");
     let [tag, setTag] = useState("");
@@ -37,7 +40,8 @@ const JoinParty = () => {
             let data = res.data;
             console.log(data)
             setToken(data.token)
-            localStorage.setItem('token', data.token)
+            //localStorage.setItem('token', data.token)
+            setNewCookie('access_token', data.token)
             putJoinParty(data.token)
         })
         .catch(err => console.log("Couldn't fetch data. Error: " + err))
@@ -49,13 +53,20 @@ const JoinParty = () => {
         axios.put(`${PARTY_API_URL}/party/${tag}`, requestData, {headers: getHeaders(tk)})
         .then(res => {
             let data = res.data;
-            console.log(data)
-            setPartyId(data.party.tag)
-            localStorage.setItem('TAG', data.party.tag);
+            let partyTag = data.party.tag
+            setPartyId(partyTag)
+            //localStorage.setItem('TAG', data.party.tag);
+            setNewCookie('tag', partyTag)
             goToWaitRoom(data.party.TAG)
         })
         .catch(err => console.log("Couldn't fetch data. Error: " + err))
 
+    }
+
+    const setNewCookie = (key, value) => {
+        let expires = new Date()
+        expires.setTime(expires.getTime() + (SIX_HOURS))
+        setCookie(key, value, { path: '/',  expires})
     }
 
     const goToWaitRoom = (tag) => {
@@ -70,6 +81,8 @@ const JoinParty = () => {
         <div>
             <div className="container">
 
+                <div className="margin-top"></div>
+
                 <div className="right">
                     <a href="/create-party" className="a-tag" >Create Party</a>
                 </div>
@@ -81,13 +94,13 @@ const JoinParty = () => {
                 <div className="row justify-content-md-center h-100">
                     <div className="card-body">
                         <div className="form-group">
-                            <label for="name">Name</label>
-                            <input autoComplete='off' onChange={(e) => setName(e.target.value)} id="name" type="text" className="form-control" name="name" value="" required autofocus/>
+                            <label htmlFor="name">Name</label>
+                            <input autoComplete='off' onChange={(e) => setName(e.target.value)} id="name" type="text" className="form-control" name="name" required autofocus/>
                         </div>
 
                         <div className="form-group">
-                            <label for="party-tag">Party TAG</label>
-                            <input autoComplete='off' onChange={(e) => setTag(e.target.value)} id="party-tag" type="text" className="form-control" name="party-tag" required data-eye/>
+                            <label htmlFor="party-tag">Party TAG</label>
+                            <input autoComplete='off' onInput={(e) => e.target.value = e.target.value.toUpperCase()} onChange={(e) => setTag(e.target.value.toUpperCase())} id="party-tag" type="text" className="form-control" name="party-tag" required data-eye/>
                         </div>
 
                         <div className="form-group">
