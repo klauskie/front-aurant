@@ -50,22 +50,6 @@ class Menu extends Component {
         .catch(err => console.log("Couldn't fetch data. Error: " + err))
     }
 
-    render() {
-        return (
-            <div>
-                <TopMenu />
-                
-                <Modal show={this.state.toggle} onHide={this.handleClose} dialogClassName="detail-modal">
-                    <Modal.Body>
-                        <ItemDetailView itemBundle={this.state.currentItem} orderCallback={this.postClientOrder} />
-                    </Modal.Body>
-                </Modal>
-
-                <MenuTable list={this.state.list} itemCallback={this.toggleDetailView} />
-            </div>
-        )
-    }
-
     toggleDetailView = (itemBundle) => {
         console.log(itemBundle)
     
@@ -94,6 +78,22 @@ class Menu extends Component {
             console.log("No token... Cannot toggle item detail view")
         }
         return token.length > 0
+    }
+
+    render() {
+        return (
+            <div>
+                <TopMenu />
+                
+                <Modal show={this.state.toggle} onHide={this.handleClose} dialogClassName="detail-modal">
+                    <Modal.Body>
+                        <ItemDetailView itemBundle={this.state.currentItem} orderCallback={this.postClientOrder} />
+                    </Modal.Body>
+                </Modal>
+
+                <MenuTable list={this.state.list} itemCallback={this.toggleDetailView} />
+            </div>
+        )
     }
 }
 
