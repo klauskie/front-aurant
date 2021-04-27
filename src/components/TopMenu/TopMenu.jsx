@@ -5,10 +5,15 @@ import { FiShoppingCart } from 'react-icons/fi';
 import { AiOutlineHome } from 'react-icons/ai';
 
 
-const TopMenu = () => {
+const TopMenu = ( {tagId} ) => {
     return (
         <div>
             <nav className="navbar navbar-expand-sm navbar-light bg-light">
+            <ul className="nav mr-auto">
+                    <li className="nav-item">
+                        <h3>{tagId}</h3>
+                    </li>
+                </ul>
                 <ul className="nav ml-auto">
                     <li className="nav-item">
                         <Link to='/menu' className="nav-link">

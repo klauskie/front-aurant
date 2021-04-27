@@ -83,7 +83,7 @@ class Menu extends Component {
     render() {
         return (
             <div>
-                <TopMenu />
+                <TopMenu tagId={this.state.tag} />
                 
                 <Modal show={this.state.toggle} onHide={this.handleClose} dialogClassName="detail-modal">
                     <Modal.Body>

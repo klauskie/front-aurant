@@ -4,7 +4,7 @@ import OrderTableBlock from './OrderTableBlock';
 
 const OrderTable = ({ list }) => {
     return (
-        <div className="container">
+        <div>
             <ul>
                 {
                     list.map((orderOwner, index) => {

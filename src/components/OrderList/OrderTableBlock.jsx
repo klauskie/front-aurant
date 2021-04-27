@@ -1,22 +1,44 @@
 import React from 'react'
-import '../Menu/Menu.css'; 
+import './Order.css'; 
 import OrderItem from './OrderItem';
 
 
 const OrderTableBlock = ({ orderOwner }) => {
 
+    const calcClientTotal = () => {
+        let total = 0;
+        for (let i = 0; i < orderOwner.order_list.length; i++) {
+            let item = orderOwner.order_list[i];
+            total += parseFloat(item.metadata.quantity) * parseFloat(item.catalog_item.price);
+        }
+        return total.toFixed(2);
+    }
+
     return (
-        <div>
+        <div className="vertical-filler">
             <li>
-                <div className="h2-tag">{orderOwner.client.Name}</div>
+                <div className="flex-row-container">
+                    <div className="h3-tag left-f">{orderOwner.client.Name}</div>
+                    <div className="h3-tag right-f font-smaller-20 attention-color-red">${calcClientTotal()}</div>
+                </div>
             </li>
 
-            <ul>
+            <ul className="flex-col-container">
                 {
-                    orderOwner.order_list.map((item, index) => <OrderItem item={item} /> )
+                    orderOwner.order_list.map((item, index) => {
+                        return (
+                            <div className="flex-item" key={index}>
+                                <div className="item-flex-row-s">
+                                    <span className="v-line"></span>
+                                </div>
+                                <div className="item-flex-row-l">
+                                    <OrderItem item={item} key={index}/>
+                                </div>
+                            </div>
+                        )
+                    })
                 }
-            </ul>
-            
+            </ul>            
         </div>
     )
 };
