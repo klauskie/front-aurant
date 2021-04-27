@@ -2,7 +2,7 @@ import React from 'react'
 import './Menu.css'; 
 
 
-const MenuTableRow = ({ itemID, name, description, price, itemCallback }) => {
+const MenuTableRow = ({ itemID, name, description, price, isAvailable, isDisplayable, itemCallback }) => {
 
     const onItemClicked = () => {
         let bundle = {
@@ -15,7 +15,7 @@ const MenuTableRow = ({ itemID, name, description, price, itemCallback }) => {
     }
 
     return (
-        <li>
+        <li className={`${isAvailable ? '' : 'disable'} ${isDisplayable ? '' : 'hide'}`}>
             <div className="grid-container item-container" onClick={onItemClicked}>
                 <div className="name-block">{name}</div>
                 <div className="price-block">${price}</div>

@@ -42,10 +42,6 @@ class Orders extends Component {
         .catch(err => console.log("Couldn't fetch data. Error: " + err))
     }
 
-    filterNonHost = (item) => {
-        return item.client.Id === this.state.token
-    }
-
     toggleClientListView = (toggleValue) => {
         if (!toggleValue) {
             this.setState({
@@ -53,7 +49,7 @@ class Orders extends Component {
             })
         } else {
             this.setState({
-                tempList: this.state.list.filter(this.filterNonHost),
+                tempList: this.state.list.slice(0,1), // expects first item is client
             })
         }
     }

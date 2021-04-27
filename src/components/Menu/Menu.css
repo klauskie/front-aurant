@@ -47,3 +47,12 @@ ul {
     list-style-type: none;
     padding: 0;
 }
+
+.disable {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.hide {
+    display: none;
+}

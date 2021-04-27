@@ -31,6 +31,7 @@ class Menu extends Component {
         axios.get(GET_COMPLETE_MENU_LIST_URL)
             .then(res => {
                 let data = res.data;
+                console.log(data)
                 this.setState({
                     list: data
                 })

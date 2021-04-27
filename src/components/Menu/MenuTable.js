@@ -13,7 +13,16 @@ const MenuTable = ({ list, itemCallback }) => {
                                 <CategoryTableRow categoryId={categoryItem.categoryId} name={categoryItem.name} key={index} />
                                 {
                                     categoryItem.menuItems.map((menuItem, index) => (
-                                        <MenuTableRow itemID={menuItem.itemId} name={menuItem.name} description={menuItem.description} price={menuItem.price} itemCallback={itemCallback} key={index} />
+                                        <MenuTableRow 
+                                            itemID={menuItem.itemId} 
+                                            name={menuItem.name} 
+                                            description={menuItem.description} 
+                                            price={menuItem.price} 
+                                            isAvailable={menuItem.isAvailable} 
+                                            isDisplayable={menuItem.isDisplayable} 
+                                            itemCallback={itemCallback} 
+                                            key={index} 
+                                        />
                                     ))
                                 }
                             </div>     
