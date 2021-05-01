@@ -46,6 +46,7 @@ const CreateParty = (props) => {
         setNewCookie(KEY_ACCESS_TOKEN, mToken)
         setNewCookie(KEY_TAG, partyTag)
         setNewCookie(KEY_VENDOR_ID, vendorId)
+        localStorage.setItem(KEY_VENDOR_ID, vendorId);
     }
 
     const redirectHelper = (path, data) => {    

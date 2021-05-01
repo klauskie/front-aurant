@@ -8,6 +8,9 @@ const OrderTable = ({ list }) => {
             <ul>
                 {
                     list.map((orderOwner, index) => {
+                        if (orderOwner.order_list == null) {
+                            return (<div></div>)
+                        }
                         return (
                             <div key={index}>
                                 <OrderTableBlock orderOwner={orderOwner} key={index} />

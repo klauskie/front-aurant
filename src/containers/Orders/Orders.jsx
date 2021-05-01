@@ -29,10 +29,12 @@ class Orders extends Component {
         // TODO poll server
 
         fetchPartyOrderGET(this.state.tag, this.state.token).then(data => {
-            this.setState({
-                list: data.Orders,
-                tempList: data.Orders
-            })
+            if (data.Orders != null) {
+                this.setState({
+                    list: data.Orders,
+                    tempList: data.Orders
+                })
+            }
         }).catch(() => {})
     }
 
