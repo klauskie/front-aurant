@@ -18,7 +18,8 @@ const OrderItem = ({ item }) => {
                 <div className="B-block">
                     <span>
                         {item.metadata.quantity} x ${item.catalog_item.price} = <span className="attention-color">${calcPrice()}</span>
-                    </span> </div>
+                    </span> 
+                </div>
             </div>
         </li>
     )

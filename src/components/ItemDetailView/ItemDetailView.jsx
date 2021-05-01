@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
-import './ItemDetailView.css';
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
+import './ItemDetailView.css';
 
 
 const ItemDetailView = ({ itemBundle, orderCallback }) => {
@@ -23,10 +23,6 @@ const ItemDetailView = ({ itemBundle, orderCallback }) => {
         let newVal = currentValue + 1
         quantityInput.current.value = newVal
         setQuantity(newVal)
-    }
-
-    const handleChange = () => {
-
     }
 
     const prepareDataOrder = () => {
@@ -61,7 +57,7 @@ const ItemDetailView = ({ itemBundle, orderCallback }) => {
                                 </span>
 
 
-                                <input id="quantity-input" ref={quantityInput} value={quantity} onChange={(e) => {handleChange(e)}} type="number" className="form-control input-number" min={1} max={100}/>
+                                <input id="quantity-input" ref={quantityInput} value={quantity} onChange={(e) => {}} type="number" className="form-control input-number" min={1} max={100}/>
                                 
                                 
                                 <span className="input-group-btn">

@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import axios from 'axios';
 import { instanceOf } from 'prop-types';
 import { withCookies, Cookies } from 'react-cookie';
+import { KEY_ACCESS_TOKEN, KEY_TAG, KEY_VENDOR_ID } from '../../util/Constants';
+import { fetchPartyGET, updatePartyStatusPUT } from '../../util/APIutils';
 import './InitialSetup.css';
 
-const PARTY_API_URL = 'http://localhost:8081/party-api'
 
 class WaitRoomComponent extends Component {
     static propTypes = {
@@ -15,14 +15,15 @@ class WaitRoomComponent extends Component {
         pollingCount: 0,
         delay: 5000,
         clients: [],
-        tag: this.props.cookies.get("tag") || "",
-        token: this.props.cookies.get("access_token") || "",
+        tag: this.props.cookies.get(KEY_TAG) || "",
+        token: this.props.cookies.get(KEY_ACCESS_TOKEN) || "",
+        vendorId: this.props.cookies.get(KEY_VENDOR_ID) || "",
         host: {},
     };
 
     componentDidMount() {
         this.interval = setInterval(this.tick, this.state.delay)
-        this.getPartyData()
+        this.fetchPartyData()
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -41,23 +42,19 @@ class WaitRoomComponent extends Component {
         this.setState({
             pollingCount: this.state.pollingCount + 1
         })
-        this.getPartyData()
+        this.fetchPartyData()
     }
 
-    getPartyData = () => {
-        console.log("API CALL: /party-api/party/<tag>")
-        axios.get(`${PARTY_API_URL}/party/${this.state.tag}`, {headers: {'token': this.state.token}})
-        .then(res => {
-            console.log(res.data)
+    fetchPartyData = () => {
+        fetchPartyGET(this.state.tag, this.state.token).then(party => {
             this.setState({
-                clients: res.data.party.client_list,
-                host: res.data.party.host
+                clients: party.client_list,
+                host: party.host
             })
-            if (res.data.party.is_ok) {
+            if (party.is_ok) {
                 this.partyReadyNextScreen()
             }
-        })
-        .catch(err => console.log("Couldn't fetch data. Error: " + err))
+        }).catch(() => {});
     }
 
     setPartyToReadyState = () => {
@@ -65,13 +62,10 @@ class WaitRoomComponent extends Component {
             console.log("User not host")
             return
         }
-        console.log(`API CALL: ${PARTY_API_URL}/party-status/${this.state.tag}`)
-        axios.put(`${PARTY_API_URL}/party-status/${this.state.tag}`, {ready: true}, {headers: {'token': this.state.token}})
-        .then(res => {
-            console.log(res.data)
+
+        updatePartyStatusPUT(this.state.tag, this.state.token).then(data => {
             this.partyReadyNextScreen()
-        })
-        .catch(err => console.log("Couldn't fetch data. Error: " + err))
+        }).catch(() => {})
     }
 
     isUserHost = () => {
@@ -86,7 +80,7 @@ class WaitRoomComponent extends Component {
     checkForCookie = () => {
         if (this.state.token === "") {
             clearInterval(this.interval)
-            this.props.history.replace("/join-party")
+            this.props.history.replace(`/join-party/${this.state.vendorId}`)
             return
         }
     }

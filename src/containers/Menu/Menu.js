@@ -1,18 +1,14 @@
 import React, { Component } from 'react'
 import { Modal } from 'react-bootstrap';
-import axios from 'axios';
 import MenuTable from '../../components/Menu/MenuTable';
 import TopMenu from '../../components/TopMenu/TopMenu';
 import ItemDetailView from '../../components/ItemDetailView/ItemDetailView';
 import { instanceOf } from 'prop-types';
 import { withCookies, Cookies } from 'react-cookie';
+import { KEY_ACCESS_TOKEN, KEY_TAG, KEY_VENDOR_ID } from '../../util/Constants';
+import { fetchMenuGET, sendClientOrderPOST } from '../../util/APIutils';
 import './Menu.css'; 
 
-const RESTAURANT_ID = "db011a96-4310-414f-b30c-9d0c4eaaefed"
-const PARTY_API_URL = 'http://localhost:8081/party-api'
-const API_MENU_URL = "http://localhost:8080/api/"
-const GET_MENU_LIST_URL = API_MENU_URL + `item/${RESTAURANT_ID}`
-const GET_COMPLETE_MENU_LIST_URL = API_MENU_URL + `category/restaurant/${RESTAURANT_ID}`
 
 class Menu extends Component {
     static propTypes = {
@@ -23,38 +19,31 @@ class Menu extends Component {
         list: [],
         toggle: false,
         currentItem: {},
-        token: this.props.cookies.get("access_token") || "",
-        tag: this.props.cookies.get("tag") || "",
+        token: this.props.cookies.get(KEY_ACCESS_TOKEN) || "",
+        tag: this.props.cookies.get(KEY_TAG) || "",
+        vendorId: this.props.cookies.get(KEY_VENDOR_ID) || "",
     }
 
     componentDidMount() {
-        axios.get(GET_COMPLETE_MENU_LIST_URL)
-            .then(res => {
-                let data = res.data;
-                console.log(data)
-                this.setState({
-                    list: data
-                })
-                // console.log(data)
-            })
-            .catch(err => console.log("Couldn't fetch data. Error: " + err))
+        this.fetchMenu()
     }
 
-    postClientOrder = (order) => {
-        console.log("API CALL: /party-api/order/<clientID>")
-        axios.post(`${PARTY_API_URL}/order/${this.state.tag}`, order, {headers: {'token': this.state.token}})
-        .then(res => {
-            let data = res.data;
-            console.log(data)
+    fetchMenu = () => {
+        fetchMenuGET(this.state.vendorId).then(data => {
+            this.setState({
+                list: data
+            })
+        }).catch(() => {})
+    }
+
+    sendClientOrder = (order) => {
+        sendClientOrderPOST(order, this.state.tag, this.state.token).then(data => {
             this.handleClose()
         })
-        .catch(err => console.log("Couldn't fetch data. Error: " + err))
     }
 
     toggleDetailView = (itemBundle) => {
         console.log(itemBundle)
-    
-
         this.setState({
             toggle: !this.state.toggle && this.isTokenAvailable(),
             currentItem: itemBundle
@@ -69,16 +58,15 @@ class Menu extends Component {
     }
 
     isTokenAvailable = () => {
+        let mToken = this.props.cookies.get(KEY_ACCESS_TOKEN) || ""
         this.setState({
-            token: this.props.cookies.get("access_token") || "",
+            token: mToken,
         });
 
-        let token = this.props.cookies.get("access_token") || ""
-
-        if (token.length === 0) {
+        if (mToken.length === 0) {
             console.log("No token... Cannot toggle item detail view")
         }
-        return token.length > 0
+        return mToken.length > 0
     }
 
     render() {
@@ -88,7 +76,7 @@ class Menu extends Component {
                 
                 <Modal show={this.state.toggle} onHide={this.handleClose} dialogClassName="detail-modal">
                     <Modal.Body>
-                        <ItemDetailView itemBundle={this.state.currentItem} orderCallback={this.postClientOrder} />
+                        <ItemDetailView itemBundle={this.state.currentItem} orderCallback={this.sendClientOrder} />
                     </Modal.Body>
                 </Modal>
 

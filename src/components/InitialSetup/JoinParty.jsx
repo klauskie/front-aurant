@@ -1,80 +1,63 @@
 import React, { useState } from 'react'
-import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import { useCookies } from 'react-cookie'
+import { KEY_ACCESS_TOKEN, KEY_TAG, SIX_HOURS, KEY_VENDOR_ID } from '../../util/Constants';
+import { guestLoginPOST, joinPartyPUT } from '../../util/APIutils';
 import './InitialSetup.css';
 
-const SESSION_API_URL = 'http://localhost:8083'
-const PARTY_API_URL = 'http://localhost:8081/party-api'
-const SIX_HOURS = 6*60*60*1000;
 
-const JoinParty = () => {
+const JoinParty = (props) => {
     const history = useHistory();
-    const [cookies, setCookie] = useCookies(['access_token', 'tag'])
-
+    const [cookies, setCookie] = useCookies([KEY_ACCESS_TOKEN, KEY_TAG])
+    
     let [name, setName] = useState("");
     let [tag, setTag] = useState("");
     let [token, setToken] = useState("");
-    let [partyId, setPartyId] = useState("");
 
-    let vendorId = "ABC123"
-
-    const getHeaders = (tk) => {
-        return {
-            'Content-Type': 'application/json',
-            'token': tk
-        }
-    }
+    let vendorId = props.match.params.vendorId
 
     const joinParty = () => {
+        if (vendorId === "") {
+            return
+        }
         // Login as guest
-        guestLogin()
+        handleGuestLogin()
     }
 
-    const guestLogin = () => {
-        console.log("API CALL: /session-api/guest-login")
-        axios.post(`${SESSION_API_URL}/session-api/guest-login`, {
-            name: name,
-            vendor_id: vendorId
-        }).then(res => {
-            let data = res.data;
-            console.log(data)
-            setToken(data.token)
-            //localStorage.setItem('token', data.token)
-            setNewCookie('access_token', data.token)
-            putJoinParty(data.token)
-        })
-        .catch(err => console.log("Couldn't fetch data. Error: " + err))
+    const handleGuestLogin = () => {
+        guestLoginPOST(name, vendorId).then(loginData => {
+            setToken(loginData.token)
+            handleJoinParty(loginData.token)
+        }).catch(() => {});
     }
 
-    const putJoinParty = (tk) => {
-        console.log("API CALL: /party-api/party")
-        let requestData = {}
-        axios.put(`${PARTY_API_URL}/party/${tag}`, requestData, {headers: getHeaders(tk)})
-        .then(res => {
-            let data = res.data;
-            let partyTag = data.party.tag
-            setPartyId(partyTag)
-            //localStorage.setItem('TAG', data.party.tag);
-            setNewCookie('tag', partyTag)
-            goToWaitRoom(data.party.TAG)
-        })
-        .catch(err => console.log("Couldn't fetch data. Error: " + err))
+    const handleJoinParty = (mToken) => {
+        joinPartyPUT(tag, mToken).then(partyData => {
+            let partyTag = partyData.party.tag
+            saveCookies(mToken, partyTag)
 
+            redirectHelper("/waitroom", { 
+                token: mToken,
+                tag: partyTag
+            })
+        }).catch(() => {});
+    }
+
+    const saveCookies = (mToken, partyId) => {
+        setNewCookie(KEY_ACCESS_TOKEN, mToken)
+        setNewCookie(KEY_TAG, partyId)
+        setNewCookie(KEY_VENDOR_ID, vendorId)
+    }
+
+    const redirectHelper = (path, data) => {
+        console.log("Go to: " + path)
+        history.replace(path, data)
     }
 
     const setNewCookie = (key, value) => {
         let expires = new Date()
         expires.setTime(expires.getTime() + (SIX_HOURS))
         setCookie(key, value, { path: '/',  expires})
-    }
-
-    const goToWaitRoom = (tag) => {
-        console.log("Go to wait room")
-        history.replace("/waitroom", { 
-            token: token,
-            tag: tag
-        })
     }
 
     return (
@@ -84,7 +67,7 @@ const JoinParty = () => {
                 <div className="margin-top"></div>
 
                 <div className="right">
-                    <a href="/create-party" className="a-tag" >Create Party</a>
+                    <a href={`/create-party/${vendorId}`} className="a-tag" >Create Party</a>
                 </div>
 
                 <div className="">

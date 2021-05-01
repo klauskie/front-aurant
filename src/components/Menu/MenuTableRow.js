@@ -8,8 +8,8 @@ const MenuTableRow = ({ itemID, name, description, price, isAvailable, isDisplay
         let bundle = {
             itemID: itemID,
             name: name,
-            description, description,
-            price, price
+            description: description,
+            price: price
         }
         itemCallback(bundle)
     }

@@ -12,8 +12,8 @@ class Routes extends Component {
         return (
             <Switch>
                 <Route exact path="/" component={InitialSelection} />
-                <Route exact path="/create-party" component={CreateParty} />
-                <Route exact path="/join-party" component={JoinParty} />
+                <Route exact path="/create-party/:vendorId" component={CreateParty} />
+                <Route exact path="/join-party/:vendorId" component={JoinParty} />
                 <Route exact path="/waitroom" render={(props) => <Waitroom {...props}/>}/>
                 <Route exact path="/menu" component={Menu} />
                 <Route exact path="/orders" component={Orders} />
